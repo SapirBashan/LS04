@@ -1,0 +1,55 @@
+%1.
+% Base case: the reverse of an empty list is an empty list.
+reverse([], []).
+
+% Recursive case: reverse the tail of the list and append the head to the end.
+reverse([H|T], Rev) :-
+    reverse(T, RevT),     % Reverse the tail of the list.
+    append(RevT, [H], Rev). % Append the head to the reversed tail.
+
+%2. 
+% Base case: an element is a member of a list if it is the head of the list.
+member(X, [X|_]).
+
+% Recursive case: an element is a member of a list if it is a member of the tail.
+member(X, [_|T]) :-
+    member(X, T).
+
+
+%3. 
+palindrome(L) :- 
+    reverse(L, L).
+
+
+%4.
+% Base case: A single-element list is sorted.
+sorted([]). 
+sorted([_]). 
+
+% Recursive case: Check the first two elements and continue with the rest of the list.
+sorted([X, Y | Rest]) :-
+    check(X, Y),             
+    sorted([Y | Rest]).    
+
+check(X, Y) :-
+    X =< Y.
+
+%5.
+% Base case: The permutation of an empty list is an empty list.
+permutation2([], []).
+
+% Recursive case: Remove X from L to form L1 and generate permutations of L1.
+permutation2(L, [X | P]) :- 
+    del(X, L, L1),          
+    permutation2(L1, P).    
+
+% Delete the first occurrence of X from the list L, resulting in L1.
+del(X, [X | L], L).      
+del(X, [Y | L], [Y | L1]) :- 
+    del(X, L, L1).         
+
+
+
+
+
+

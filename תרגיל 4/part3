@@ -1,0 +1,80 @@
+%1, A.
+% Base case: When N is 1, the result is just 1.
+scum(1, 1).
+
+% Recursive case: When N > 1, recursively sum up the numbers.
+scum(N, Res) :-
+    N > 1,
+    N1 is N - 1,
+    scum(N1, Res1),
+    Res is Res1 + N.
+
+%1, B.
+% Base case: When N is 0, the sum of digits is 0.
+sumDigits(0, 0).
+
+% Recursive case: Extract the last digit and sum it with the result for the remaining number.
+sumDigits(N, Sum) :-
+    N > 0,
+    LastDigit is N mod 10,       
+    Rest is N // 10,             
+    sumDigits(Rest, SumRest),    
+    Sum is LastDigit + SumRest. 
+
+%2. A.
+% Base case: When N is 0, the result is an empty list.
+split(0, []) :- !.
+
+% Recursive case: Extract the last digit and accumulate the digits in a list.
+split(N, Digits) :-
+    N > 0,
+    LastDigit is N mod 10,
+    Rest is N // 10,
+    split(Rest, RestList),
+    append(RestList, [LastDigit], Digits).  % Append LastDigit to the end of the list.
+  
+
+%2. B.
+% Base case: An empty list results in 0.
+create([], 0).
+
+% Recursive case: Build the number from the list.
+create(List, N) :-
+    List \= [],  
+    List = [Head|Tail],
+    create(Tail, N1),
+    N is N1* 10 + Head.
+
+%2. C.
+reverse(N,N1) :-
+    split(N,List),
+    create(List,N1).
+
+%3.A
+intersection([], _, []).
+intersection([H|T], L2, [H|Z]) :- 
+    member(H, L2), 
+    intersection(T, L2, Z).
+intersection([H|T], L2, Z) :- 
+    \+ member(H, L2), 
+    intersection(T, L2, Z).
+
+%3.B
+minus([], _, []).
+minus([H|T], L2, [H|Z]) :- 
+    \+ member(H, L2), 
+    minus(T, L2, Z).
+minus([H|T], L2, Z) :- 
+    member(H, L2), 
+    minus(T, L2, Z).
+
+
+
+
+ 
+
+
+
+    
+    
+

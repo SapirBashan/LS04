@@ -1,0 +1,170 @@
+%מטלה 4 פרולוג
+% Parent relationships
+parent(avraham, yitchak).
+parent(avraham, ishmael).
+parent(sarah, yitchak).
+parent(sarah, ishmael).
+parent(yitchak, yaakov).
+parent(yitchak, esav).
+parent(rivka, yaakov).
+parent(rivka, esav).
+parent(esav, eliphaz).
+parent(esav, reuel).
+parent(yehodit, eliphaz).
+parent(yehodit, reuel).
+parent(yaakov, yosef).
+parent(yaakov, yehuda).
+parent(yaakov, dinah).
+parent(rachel, yosef).
+parent(lea, yehuda).
+parent(lea, dinah).
+parent(yosef, ephraim).
+parent(yosef, menashe).
+parent(asenath, ephraim).
+parent(asenath, menashe).
+parent(dinah, shaul).
+parent(shchem, shaul).
+parent(eliphaz, amalek).
+parent(yehuda, peretz).
+parent(yehuda, zerah).
+parent(tamar, peretz).
+parent(tamar, zerah).
+
+% Gender facts
+male(avraham).
+male(yitchak).
+male(yaakov).
+male(ishmael).
+male(esav).
+male(eliphaz).
+male(reuel).
+male(yosef).
+male(yehuda).
+male(ephraim).
+male(menashe).
+male(shaul).
+male(shchem).
+male(amalek).
+male(peretz).
+male(zerah).
+
+female(sarah).
+female(rivka).
+female(rachel).
+female(lea).
+female(yehodit).
+female(dinah).
+female(asenath).
+female(tamar).
+
+% Marriage facts
+married(avraham, sarah).
+married(sarah, avraham).
+married(yitchak, rivka).
+married(rivka, yitchak).
+married(yaakov, rachel).
+married(rachel, yaakov).
+married(yaakov, lea).
+married(lea, yaakov).
+married(yehodit, esav).
+married(esav, yehodit).
+married(yosef, asenath).
+married(asenath, yosef).
+married(dinah,shchem).
+
+
+father(X,Y) :-
+    parent(X,Y),
+    male(X).
+
+mother(X,Y) :-
+    parent(X,Y),
+    female(X).
+
+sun(Y,X) :-
+    parent(X,Y),
+    male(X).
+
+daughter(Y,X) :-
+    parent(X,Y),
+    female(X).
+
+grandfather(X,Y) :-
+    parent(X,Z),
+    parent(Z,Y),
+	male(X).
+
+grandmother(X,Y) :-
+    parent(X,Z),
+    parent(Z,Y),
+	female(X).
+
+grandsun(Y,X) :-
+    parent(X,Z),
+    parent(Z,Y),
+	male(X).
+
+granddaughter(Y,X) :-
+    parent(X,Z),
+    parent(Z,Y),
+	female(X).
+
+%also half brothers are included as siblings
+sibling(X,Y) :-
+    parent(Z,X),
+    parent(Z,Y),
+    X \= Y.
+
+
+% uncle_no_blood(X, Y) :- X is the husband of Y's aunt (Z's sibling)
+uncle_no_blood(X, Y) :-
+    parent(Z, Y),         % Z is Y's parent
+    sibling(Z, W),        % W is Z's sibling (Y's aunt/uncle)
+    married(W, X),        % X is married to W
+    male(X).              % X is male
+
+% Cousins
+cousin_of_aunt(X, Y) :-
+    parent(P1, X),
+    parent(P2, Y),
+    sibling(P1, P2),
+    female(P2),
+    male(Y),
+    X \= Y.
+
+% Rule for first cousins (children of siblings)
+cousin(X, Y) :-
+    parent(P1, X),
+    parent(P2, Y),
+    sibling(P1, P2),
+    X \= Y.
+
+% Niece
+niece(X, Y) :-
+    parent(P, X),
+    sibling(P, Y),
+    female(X).
+
+% Rule for second-degree cousins (grandchildren of siblings)
+second_degree_cousins(X, Y) :-
+    parent(P1, X),
+    parent(P2, Y),
+    cousin(P1, P2), % Their parents are first cousins
+    X \= Y.
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
